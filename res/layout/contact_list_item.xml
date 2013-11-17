@@ -1,0 +1,21 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+    <CheckBox 
+    android:id="@+id/contactCheck"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingRight="5dp"
+    android:clickable="false"
+    android:focusable="false"
+    />
+
+    <TextView
+        android:id="@+id/contactLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+</LinearLayout>
