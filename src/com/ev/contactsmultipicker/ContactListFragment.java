@@ -144,20 +144,23 @@ public class ContactListFragment extends Fragment implements LoaderCallbacks<Cur
 					ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
 					new String[] { id }, null);
 			List<ContactResult.ResultItem> resultItems = new LinkedList<ContactResult.ResultItem>();
-			
-			boolean sameItem = true;
+
+			itemCursorLoop:
 			while (itemCursor.moveToNext()) {
 				String contactNumber = itemCursor.getString(itemCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 				int contactKind = itemCursor.getInt(itemCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
 
-				if (sameItem && resultItems.size() > 0) {
-					sameItem = contactNumber.equals(resultItems.get(0).getResult());  
+				for (ResultItem previousItem : resultItems) {
+					if (contactNumber.equals(previousItem.getResult())) {
+						continue itemCursorLoop;
+					}
 				}
+				
 				resultItems.add(new ContactResult.ResultItem(contactNumber, contactKind));
 			}
 			itemCursor.close();
 			
-			if (! sameItem ) {
+			if (resultItems.size() > 1) {
 				// contact has multiple items - user needs to choose from them
 				chooseFromMultipleItems(resultItems, checkbox, id);
 			} else {
