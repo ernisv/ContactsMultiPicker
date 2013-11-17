@@ -64,18 +64,18 @@ public class ContactListFragment extends Fragment implements LoaderCallbacks<Cur
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
+			View ret = super.getView(position, convertView, parent);
 			
 			if (convertView != null) {
-				CheckBox checkbox = (CheckBox) convertView.findViewById(R.id.contactCheck);
+				CheckBox checkbox = (CheckBox) ret.findViewById(R.id.contactCheck);
 				
 				getCursor().moveToPosition(position);
 				String id = getCursor().getString(0);
 				checkbox.setChecked(results.containsKey(id));
 				
-				return convertView;
-			} else {
-				return super.getView(position, convertView, parent);
-			}
+			} 
+			
+			return ret; 
 		}
 	}
 
