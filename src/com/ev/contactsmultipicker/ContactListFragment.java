@@ -50,6 +50,7 @@ import com.ev.contactsmultipicker.ContactResult.ResultItem;
  *
  */
 public class ContactListFragment extends Fragment implements LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
+	private final static String SAVE_STATE_KEY = "mcListFrag";
 
 	private final String[] projection = new String[] { Contacts._ID, Contacts.DISPLAY_NAME };
 	private final String selection = Contacts.HAS_PHONE_NUMBER + " = 1";
@@ -66,17 +67,21 @@ public class ContactListFragment extends Fragment implements LoaderCallbacks<Cur
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View ret = super.getView(position, convertView, parent);
 			
-			if (convertView != null) {
-				CheckBox checkbox = (CheckBox) ret.findViewById(R.id.contactCheck);
-				
-				getCursor().moveToPosition(position);
-				String id = getCursor().getString(0);
-				checkbox.setChecked(results.containsKey(id));
-				
-			} 
+			CheckBox checkbox = (CheckBox) ret.findViewById(R.id.contactCheck);
+			
+			getCursor().moveToPosition(position);
+			String id = getCursor().getString(0);
+			checkbox.setChecked(results.containsKey(id));
 			
 			return ret; 
 		}
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		
+		outState.putSerializable(SAVE_STATE_KEY, results);
 	}
 
 	private Hashtable<String, ContactResult> results = new Hashtable<String, ContactResult>();
@@ -96,9 +101,14 @@ public class ContactListFragment extends Fragment implements LoaderCallbacks<Cur
 		getLoaderManager().initLoader(0, null, this);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		
+		if (savedInstanceState != null) {
+			results = (Hashtable<String, ContactResult>) savedInstanceState.getSerializable(SAVE_STATE_KEY);
+		}
 		
 		View rootView = inflater.inflate(R.layout.contact_list_fragment, container);
 		
