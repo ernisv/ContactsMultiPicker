@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,7 +28,7 @@ import android.view.MenuItem;
  * @author Ernestas Vaiciukevicius (ernestas.vaiciukevicius@gmail.com)
  *
  */
-public class ContactPickerActivity extends FragmentActivity {
+public class ContactPickerActivity extends ActionBarActivity {
 	
 	public static final String PICKER_TYPE = "type";
 	public static final String PICKER_TYPE_PHONE = "phone";
