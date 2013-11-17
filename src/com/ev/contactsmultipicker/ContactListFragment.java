@@ -21,6 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
@@ -55,6 +56,28 @@ public class ContactListFragment extends Fragment implements LoaderCallbacks<Cur
 	
 	private ListView mContactListView;
 	private CursorAdapter mCursorAdapter;
+	
+	private class ContactsCursorAdapter extends SimpleCursorAdapter {
+		public ContactsCursorAdapter(Context context, int layout, Cursor c, String[] from, int[] to, int flags) {
+			super(context, layout, c, from, to, flags);
+		}
+		
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			
+			if (convertView != null) {
+				CheckBox checkbox = (CheckBox) convertView.findViewById(R.id.contactCheck);
+				
+				getCursor().moveToPosition(position);
+				String id = getCursor().getString(0);
+				checkbox.setChecked(results.containsKey(id));
+				
+				return convertView;
+			} else {
+				return super.getView(position, convertView, parent);
+			}
+		}
+	}
 
 	private Hashtable<String, ContactResult> results = new Hashtable<String, ContactResult>();
 	
@@ -66,7 +89,7 @@ public class ContactListFragment extends Fragment implements LoaderCallbacks<Cur
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		mCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.contact_list_item, null,
+		mCursorAdapter = new ContactsCursorAdapter(getActivity(), R.layout.contact_list_item, null,
 				new String[] { Contacts.DISPLAY_NAME }, 
 				new int[] { R.id.contactLabel }, 0);
 		
@@ -122,19 +145,23 @@ public class ContactListFragment extends Fragment implements LoaderCallbacks<Cur
 					new String[] { id }, null);
 			List<ContactResult.ResultItem> resultItems = new LinkedList<ContactResult.ResultItem>();
 			
+			boolean sameItem = true;
 			while (itemCursor.moveToNext()) {
 				String contactNumber = itemCursor.getString(itemCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 				int contactKind = itemCursor.getInt(itemCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
-				
+
+				if (sameItem && resultItems.size() > 0) {
+					sameItem = contactNumber.equals(resultItems.get(0).getResult());  
+				}
 				resultItems.add(new ContactResult.ResultItem(contactNumber, contactKind));
 			}
 			itemCursor.close();
 			
-			if (resultItems.size() > 1) {
+			if (! sameItem ) {
 				// contact has multiple items - user needs to choose from them
 				chooseFromMultipleItems(resultItems, checkbox, id);
 			} else {
-				// only one result for this contact
+				// only one result or all items are similar for this contact
 				results.put(id, new ContactResult(id, resultItems));
 			}
 		}
