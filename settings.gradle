@@ -1,1 +1,1 @@
-include ':ContactsMultiPickerLibrary'
+include ':ContactsMultiPickerLibrary', ':SampleApp'

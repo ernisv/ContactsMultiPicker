@@ -58,10 +58,8 @@ public class ContactPickerActivity extends ActionBarActivity {
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.contact_picker_options, menu);
-
 		return true;
 	}
 	
@@ -80,9 +78,7 @@ public class ContactPickerActivity extends ActionBarActivity {
 	
 	private void returnResults() {
 		ContactListFragment fragment = (ContactListFragment) getSupportFragmentManager().getFragments().get(0);
-		
 		ArrayList<ContactResult> resultList = new ArrayList<ContactResult>( fragment.getResults().values() );
-		
 		Intent retIntent = new Intent();
 		retIntent.putExtra(CONTACT_PICKER_RESULT, resultList);
 		
