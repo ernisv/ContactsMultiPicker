@@ -3,7 +3,7 @@
     android:layout_height="fill_parent" >
 
     <fragment
-        android:id="@+id/fragment1"
+        android:id="@+id/contactListFragment"
         android:name="com.ev.contactsmultipicker.ContactListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
