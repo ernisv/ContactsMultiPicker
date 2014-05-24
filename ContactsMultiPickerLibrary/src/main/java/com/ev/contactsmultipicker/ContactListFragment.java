@@ -27,6 +27,7 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
@@ -41,6 +42,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.ev.contactsmultipicker.ContactResult.ResultItem;
@@ -52,7 +54,9 @@ import com.ev.contactsmultipicker.ContactResult.ResultItem;
 public class ContactListFragment extends Fragment implements LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
 	private final static String SAVE_STATE_KEY = "mcListFrag";
 
-	private final String[] projection = new String[] { Contacts._ID, Contacts.DISPLAY_NAME };
+	private final String[] projection = new String[] { Contacts._ID,
+            Contacts.DISPLAY_NAME,
+            Contacts.PHOTO_THUMBNAIL_URI };
 	private final String selection = Contacts.HAS_PHONE_NUMBER + " = 1";
 	
 	private ListView mContactListView;
@@ -72,7 +76,11 @@ public class ContactListFragment extends Fragment implements LoaderCallbacks<Cur
 			getCursor().moveToPosition(position);
 			String id = getCursor().getString(0);
 			checkbox.setChecked(results.containsKey(id));
-			
+            ImageView imageView = (ImageView) ret.findViewById(R.id.contactImage);
+            String imgUri = getCursor().getString(2);
+            if(imgUri == null || imgUri.equals("")) {
+                imageView.setImageResource(R.drawable.ic_contact_picture);
+            }
 			return ret; 
 		}
 	}
@@ -95,8 +103,9 @@ public class ContactListFragment extends Fragment implements LoaderCallbacks<Cur
 		super.onCreate(savedInstanceState);
 
 		mCursorAdapter = new ContactsCursorAdapter(getActivity(), R.layout.contact_list_item, null,
-				new String[] { Contacts.DISPLAY_NAME }, 
-				new int[] { R.id.contactLabel }, 0);
+				new String[] { Contacts.DISPLAY_NAME,
+                        Contacts.PHOTO_THUMBNAIL_URI },
+				new int[] { R.id.contactLabel, R.id.contactImage }, 0);
 		
 		getLoaderManager().initLoader(0, null, this);
 	}
@@ -122,7 +131,8 @@ public class ContactListFragment extends Fragment implements LoaderCallbacks<Cur
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		return new CursorLoader(getActivity(), Contacts.CONTENT_URI, projection, selection, null, Contacts.DISPLAY_NAME);
+		return new CursorLoader(getActivity(), Contacts.CONTENT_URI,
+                projection, selection, null, Contacts.DISPLAY_NAME);
 	}
 
 	@Override
