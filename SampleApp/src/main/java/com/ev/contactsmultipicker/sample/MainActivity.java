@@ -1,17 +1,14 @@
 package com.ev.contactsmultipicker.sample;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.TextView;
 
 import com.ev.contactsmultipicker.ContactPickerActivity;
 import com.ev.contactsmultipicker.ContactResult;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -27,17 +24,18 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void showContacts(View view) {
-        startActivityForResult(
-                new Intent(getApplicationContext(), ContactPickerActivity.class), RESULT_OK);
+        // Take care of using a random request code.
+        startActivityForResult(new Intent(this, ContactPickerActivity.class), 1302);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(RESULT_OK == resultCode && data.hasExtra(
-                ContactPickerActivity.CONTACT_PICKER_RESULT)) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1302 && RESULT_OK == resultCode) {
             processContacts((ArrayList<ContactResult>)
                     data.getSerializableExtra(ContactPickerActivity.CONTACT_PICKER_RESULT));
-        } else if(data.hasExtra("error")) {
+        } else if(RESULT_CANCELED == resultCode && data.hasExtra("error")) {
             mTvContacts.setText(data.getStringExtra("error"));
         }
     }

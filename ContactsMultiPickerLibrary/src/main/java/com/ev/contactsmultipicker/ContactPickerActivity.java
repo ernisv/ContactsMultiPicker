@@ -81,7 +81,7 @@ public class ContactPickerActivity extends ActionBarActivity {
 		ArrayList<ContactResult> resultList = new ArrayList<ContactResult>( fragment.getResults().values() );
 		Intent retIntent = new Intent();
 		retIntent.putExtra(CONTACT_PICKER_RESULT, resultList);
-		
+
 		setResult(RESULT_OK, retIntent);
 		finish();
 	}
