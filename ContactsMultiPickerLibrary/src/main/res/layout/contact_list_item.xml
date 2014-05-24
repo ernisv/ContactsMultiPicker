@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+    <CheckBox 
+    android:id="@+id/contactCheck"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingRight="5dp"
+    android:clickable="false"
+    android:focusable="false"
+    />
+
+    <ImageView
+        android:id="@+id/contactImage"
+        android:src="@drawable/ic_contact_picture"
+        android:paddingRight="5dp"
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:contentDescription="@string/contactImage"/>
+
+    <TextView
+        android:id="@+id/contactLabel"
+        android:text="@string/contactName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollHorizontally="true"
+        android:textSize="24sp"
+        android:maxLines="1"
+        />
+
+</LinearLayout>
