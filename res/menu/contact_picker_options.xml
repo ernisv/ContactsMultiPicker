@@ -1,8 +1,0 @@
-
-    <menu xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:sup="http://schemas.android.com/apk/res-auto">
-        <item android:id="@+id/contacts_done" android:title="@android:string/ok"
-            sup:showAsAction="ifRoom"></item>
-        <item android:id="@+id/contacts_cancel" android:title="@android:string/cancel"
-            sup:showAsAction="ifRoom"></item>
-    </menu>
