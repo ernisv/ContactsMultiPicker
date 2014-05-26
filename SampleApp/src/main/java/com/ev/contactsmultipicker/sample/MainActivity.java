@@ -35,8 +35,12 @@ public class MainActivity extends ActionBarActivity {
         if(requestCode == 1302 && RESULT_OK == resultCode) {
             processContacts((ArrayList<ContactResult>)
                     data.getSerializableExtra(ContactPickerActivity.CONTACT_PICKER_RESULT));
-        } else if(RESULT_CANCELED == resultCode && data.hasExtra("error")) {
-            mTvContacts.setText(data.getStringExtra("error"));
+        } else if(RESULT_CANCELED == resultCode) {
+        	if (data != null && data.hasExtra("error")) {
+        		mTvContacts.setText(data.getStringExtra("error"));
+        	} else {
+        		mTvContacts.setText("Contact selection cancelled");
+        	}
         }
     }
 
